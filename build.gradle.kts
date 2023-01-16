@@ -15,7 +15,7 @@ val build by tasks.creating {
     )
 }
 
-val publish by tasks.creating {
+val publishDryRun by tasks.creating {
     group = "publishing"
 
     gradle.buildSetup.let { buildSetup ->
@@ -29,6 +29,24 @@ val publish by tasks.creating {
         dependsOn(
             dependencies.task(":publishToSonatype"),
             dependencies.task(":closeSonatypeStagingRepository"),
+        )
+    }
+}
+
+val publish by tasks.creating {
+    group = "publishing"
+
+    gradle.buildSetup.let { buildSetup ->
+        dependsOn(
+            buildSetup.task(":publishToSonatype"),
+            buildSetup.task(":closeAndReleaseSonatypeStagingRepository"),
+        )
+    }
+
+    gradle.dependencies.let { dependencies ->
+        dependsOn(
+            dependencies.task(":publishToSonatype"),
+            dependencies.task(":closeAndReleaseSonatypeStagingRepository"),
         )
     }
 }
