@@ -6,21 +6,26 @@ plugins {
     alias(libs.plugins.nexuspublish)
 }
 
-repositories {
-    mavenCentral()
-    google()
-}
-
 dependencies {
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
     implementation(libs.kotlin.gradle.plugin.api)
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.android.gradle.plugin)
+    implementation(libs.nexuspublish.gradle.plugin)
+
+    implementation(libs.intellij.gradle.plugin) {
+        exclude(group = "org.jetbrains.kotlin")
+    }
+    implementation(libs.dokka.gradle.plugin) {
+        exclude(group = "org.jetbrains.kotlin")
+    }
+
     compileOnly(gradleApi())
     compileOnly(localGroovy())
 }
 
 group = "tools.hyperdrive.subspace"
-version = System.getenv("RELEASE_VERSION") ?: "1.0-SNAPSHOT"
+version = libs.versions.subspace.get()
 
 java {
     toolchain {
@@ -38,6 +43,28 @@ gradlePlugin {
             implementationClass = "org.brightify.hyperdrive.subspace.BuildSetupPlugin"
             displayName = "Hyperdrive - Subspace - Build Setup Plugin"
             description = "Hyperdrive Build Setup Plugin"
+        }
+    }
+
+    plugins {
+        named("tools.hyperdrive.subspace.internal.publish.jvm") {
+            displayName = "Hyperdrive - Subspace - Publish JVM Plugin (Internal)"
+            description = "Convention plugin for publishing Kotlin JVM artifacts"
+        }
+
+        named("tools.hyperdrive.subspace.library.multiplatform") {
+            displayName = "Hyperdrive - Subspace - Kotlin Multiplatform Library Plugin"
+            description = "Convention plugin for Kotlin Multiplatform libraries"
+        }
+
+        named("tools.hyperdrive.subspace.plugin.kotlin") {
+            displayName = "Hyperdrive - Subspace - Kotlin Compiler Plugin"
+            description = "Convention plugin for Kotlin Compiler plugins"
+        }
+
+        named("tools.hyperdrive.subspace.root") {
+            displayName = "Hyperdrive - Subspace - Root Plugin"
+            description = "Convention plugin for Hypedrive root projects"
         }
     }
 }

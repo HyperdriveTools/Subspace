@@ -1,3 +1,7 @@
+plugins {
+    id("tools.hyperdrive.subspace.root")
+}
+
 group = "tools.hyperdrive.subspace"
 
 val Gradle.buildSetup: IncludedBuild
@@ -6,29 +10,31 @@ val Gradle.buildSetup: IncludedBuild
 val Gradle.dependencies: IncludedBuild
     get() = includedBuild("dependencies")
 
+val Gradle.pluginApi: IncludedBuild
+    get() = includedBuild("plugin-api")
+
+val Gradle.subprojects: List<IncludedBuild>
+    get() = listOf(
+        buildSetup,
+        dependencies,
+        pluginApi,
+    )
+
 val build by tasks.creating {
     group = "build"
 
-    dependsOn(
-        gradle.buildSetup.task(":build"),
-        gradle.dependencies.task(":build"),
-    )
+    gradle.subprojects.forEach { subproject ->
+        dependsOn(subproject.task(":build"))
+    }
 }
 
 val publishDryRun by tasks.creating {
     group = "publishing"
 
-    gradle.buildSetup.let { buildSetup ->
+    gradle.subprojects.forEach { subproject ->
         dependsOn(
-            buildSetup.task(":publishToSonatype"),
-            buildSetup.task(":closeSonatypeStagingRepository"),
-        )
-    }
-
-    gradle.dependencies.let { dependencies ->
-        dependsOn(
-            dependencies.task(":publishToSonatype"),
-            dependencies.task(":closeSonatypeStagingRepository"),
+            subproject.task(":publishToSonatype"),
+            subproject.task(":closeSonatypeStagingRepository"),
         )
     }
 }
@@ -36,17 +42,10 @@ val publishDryRun by tasks.creating {
 val publish by tasks.creating {
     group = "publishing"
 
-    gradle.buildSetup.let { buildSetup ->
+    gradle.subprojects.forEach { subproject ->
         dependsOn(
-            buildSetup.task(":publishToSonatype"),
-            buildSetup.task(":closeAndReleaseSonatypeStagingRepository"),
-        )
-    }
-
-    gradle.dependencies.let { dependencies ->
-        dependsOn(
-            dependencies.task(":publishToSonatype"),
-            dependencies.task(":closeAndReleaseSonatypeStagingRepository"),
+            subproject.task(":publishToSonatype"),
+            subproject.task(":closeAndReleaseSonatypeStagingRepository"),
         )
     }
 }
@@ -54,8 +53,7 @@ val publish by tasks.creating {
 val publishToMavenLocal by tasks.creating {
     group = "publishing"
 
-    dependsOn(
-        gradle.buildSetup.task(":publishToMavenLocal"),
-        gradle.dependencies.task(":publishToMavenLocal"),
-    )
+    gradle.subprojects.forEach { subproject ->
+        dependsOn(subproject.task(":publishToMavenLocal"))
+    }
 }

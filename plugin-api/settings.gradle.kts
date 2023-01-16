@@ -1,4 +1,12 @@
-includeBuild("../dependencies")
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+
+    includeBuild("../build-setup")
+}
 
 dependencyResolutionManagement {
     repositories {

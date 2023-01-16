@@ -17,8 +17,15 @@ android-gradle = "7.3.0"
 intellij = "1.12.0"
 dokka = "1.7.20"
 shadow = "7.1.2"
+nexuspublish = "1.1.0"
 
 [plugins]
+subspace-library-multiplatform = { id = "tools.hyperdrive.subspace.library.multiplatform", version.ref = "subspace" }
+subspace-library-jvm = { id = "tools.hyperdrive.subspace.library.jvm", version.ref = "subspace" }
+subspace-library-android = { id = "tools.hyperdrive.subspace.library.android", version.ref = "subspace" }
+subspace-plugin-kotlin = { id = "tools.hyperdrive.subspace.plugin.kotlin", version.ref = "subspace" }
+subspace-plugin-gradle = { id = "tools.hyperdrive.subspace.plugin.gradle", version.ref = "subspace" }
+
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -30,16 +37,19 @@ shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 swiftpackage = { id = "com.chromaticnoise.multiplatform-swiftpackage", version = "2.0.3" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version = "3.0.3" }
 intellij = { id = "org.jetbrains.intellij", version.ref = "intellij" }
-nexuspublish = { id = "io.github.gradle-nexus.publish-plugin", version = "1.1.0" }
+nexuspublish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexuspublish" }
 gradlepublish = { id = "com.gradle.plugin-publish", version = "1.0.0" }
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 
 [libraries]
+subspace-plugin-api = { module = "tools.hyperdrive.subspace:plugin-api", version.ref = "subspace" }
+
 kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
 intellij-gradle-plugin = { module = "org.jetbrains.intellij.plugins:gradle-intellij-plugin", version.ref = "intellij" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+nexuspublish-gradle-plugin = { module = "io.github.gradle-nexus.publish-plugin:io.github.gradle-nexus.publish-plugin.gradle.plugin", version.ref = "nexuspublish" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }

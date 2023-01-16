@@ -6,11 +6,12 @@ plugins {
 }
 
 group = "tools.hyperdrive.subspace"
-version = System.getenv("RELEASE_VERSION") ?: "1.0-SNAPSHOT"
+version = libs.versions.subspace.get()
 
 catalog {
     versionCatalog {
         from(files("libs.versions.toml"))
+        version("subspace", libs.versions.subspace.get())
     }
 }
 
